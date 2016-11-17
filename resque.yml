@@ -1,0 +1,3 @@
+development: reaktor-redis:6379
+test: reaktor-redis:6379
+production: reaktor-redis:6379
