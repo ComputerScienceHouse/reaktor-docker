@@ -1,0 +1,13 @@
+--- Capfile	2016-11-17 18:35:11.000000000 -0500
++++ Capfile-patched	2016-11-17 18:36:03.000000000 -0500
+@@ -1,8 +1,7 @@
+ 
+ def getPuppetMasters
+-  m_file = ENV['REAKTOR_PUPPET_MASTERS_FILE']
+-  mastersFile = open(m_file)
+-  mastersFile.readlines
++  masters = ENV['REAKTOR_PUPPET_MASTERS']
++  masters.split(/\s*,\s*/)
+ end
+ 
+ role(:puppet_master) {getPuppetMasters}

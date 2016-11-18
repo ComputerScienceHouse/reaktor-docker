@@ -15,12 +15,19 @@ RUN apk --no-cache add musl-dev g++ git make && \
     apk del make
 
 # Copy config files into the container
-ADD reaktor-cfg.yml /opt/reaktor
-ADD resque.yml /opt/reaktor/config
+ADD config/reaktor-cfg.yml /opt/reaktor
+ADD config/resque.yml /opt/reaktor/config
 
-# Set environment
+# Patch Capfile to get Puppet masters from ENV instead of file
+ADD patches/Capfile.patch /opt/reaktor
+RUN cd /opt/reaktor && \
+    patch Capfile Capfile.patch && \
+    rm -f Capfile.patch
+
+# Setup environment
 ENV RACK_ROOT=/opt/reaktor
 ENV REAKTOR_LOG=/run/reaktor/reaktor.log
+ENV REDIS_URL="redis://reaktor-redis:6379"
 WORKDIR /opt/reaktor
 
 # Expose default port
